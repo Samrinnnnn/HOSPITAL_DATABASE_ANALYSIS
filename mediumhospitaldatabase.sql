@@ -61,4 +61,17 @@ UNION ALL
 SELECT first_name,last_name,'Doctor' AS Role 
 FROM doctors;
 
-  
+--11.Show all allergies ordered by popularity.Remove NULL values 
+--from query.
+SELECT allergies, COUNT(allergies) AS total_diagnosis
+FROM patients
+WHERE allergies IS NOT NULL
+GROUP BY allergies
+ORDER BY total_diagnosis DESC;
+
+--12.Show all patient's first_name,last_name and birth_date who were born in the 1970s 
+--decade.Sort the list starting from the earliest birth_date.
+SELECT first_name,last_name,birth_date 
+FROM patients
+WHERE birth_date BETWEEN '1970-01-01' AND '1979-12-30'
+ORDER BY birth_date ASC;
