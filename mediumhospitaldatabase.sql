@@ -76,6 +76,15 @@ FROM patients
 WHERE birth_date BETWEEN '1970-01-01' AND '1979-12-30'
 ORDER BY birth_date ASC;
 
+/*13. We want to display each patient's full name in a single column.
+Their last_name in all upper letters must appear first,then first_name
+in all lower case letters.Separate the last_name and first_name with a 
+comma.Order the list by the first_name in descending order. */
+SELECT UPPER(last_name)||','|| LOWER(first_name) AS new_name_format
+FROM patients
+ORDER BY first_name DESC;
+
+
 --14.Show the province_id(s), sum of height,where the total sum of its
 --patient's height is greater than or equal to 7000.
 SELECT province_id, SUM(height) AS sum_height
@@ -113,17 +122,9 @@ FROM admissions
 WHERE (patient_id %2 <> 0 AND attending_doctor_id IN (1,5,19)) OR
 (attending_doctor_id LIKE '%2%' AND LENGTH(patient_id)=3);
 
-/*19. We want to display each patient's full name in a single column.
-Their last_name in all upper letters must appear first,then first_name
-in all lower case letters.Separate the last_name and first_name with a 
-comma.Order the list by the first_name in descending order. */
-SELECT UPPER(last_name)||','|| LOWER(first_name) AS new_name_format
-FROM patients
-ORDER BY first_name DESC;
-
-/*20. Show the province_id(s), sum of height,where the total sum of
-its patient's height is greater than or equal to 7000. */
-SELECT province_id,SUM(height)
-FROM patients
-GROUP BY province_id
-HAVING sum_height>=7000;
+/*19. Show first_name,last_name,and total number of admissions attended
+for each doctor. Every admission has been attended by a doctor. /*
+SELECT d.first_name,d.last_name,COUNT(a.attending_doctor_id) AS total_admissions
+FROM doctors d
+JOIN admissions a ON d.doctor_id=a.attending_doctor_id
+GROUP BY d.first_name;
