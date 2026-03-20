@@ -123,8 +123,18 @@ WHERE (patient_id %2 <> 0 AND attending_doctor_id IN (1,5,19)) OR
 (attending_doctor_id LIKE '%2%' AND LENGTH(patient_id)=3);
 
 /*19. Show first_name,last_name,and total number of admissions attended
-for each doctor. Every admission has been attended by a doctor. /*
+for each doctor. Every admission has been attended by a doctor. */
 SELECT d.first_name,d.last_name,COUNT(a.attending_doctor_id) AS total_admissions
 FROM doctors d
 JOIN admissions a ON d.doctor_id=a.attending_doctor_id
 GROUP BY d.first_name;
+
+/*20. For each doctor,display their id,full name,and the first and 
+last admission date they attended. */
+SELECT d.doctor_id,d.first_name||' '|| d.last_name AS doctor_name,
+  MAX(a.admission_date) AS first_admission,
+MIN(a.admission_date) AS last_admission
+FROM doctors d
+JOIN admissions a ON d.doctor_id=a.attending_doctor_id
+GROUP BY d.doctor_id
+ORDER BY d.doctor_id DESC;
