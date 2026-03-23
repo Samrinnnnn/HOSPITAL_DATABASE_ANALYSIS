@@ -161,3 +161,23 @@ SELECT first_name,last_name,COUNT(*) AS num_of_duplicates
 FROM patients
 GROUP BY first_name,last_name
 HAVING COUNT(*) >1;
+
+/*24.Display patient's full name,height in units feet rounded to 1 decimal,
+weight in the unit pounds rounded to 0 decimals,birth_date, gender non abbreviated.
+Convert CM to feet by dividing by 30.48.
+Convert KG to pounds by multiplying by 2.205. */
+SELECT first_name||' '||last_name AS patient_name,ROUND((height/30.48),1) AS patient_height,
+ROUND(weight*2.205),0) AS patient_weight,birth_date,
+CASE WHEN gender='M' THEN 'MALE'
+ELSE 'FEMALE'
+END AS 'gender_type'
+FROM patients;
+
+/* Show patient_id,first_name,last_name from patients who does not have 
+any records in the admissions table.(Their patient_id does not exist in any 
+admissions.patient_id rows.) */
+SELECT p.patient_id, p.first_name,p.last_name
+FROM patients p
+WHERE p.patient_id NOT IN
+(SELECT a.patient_id FROM admissions a);
+
