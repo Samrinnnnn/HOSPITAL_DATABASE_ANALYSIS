@@ -173,7 +173,7 @@ ELSE 'FEMALE'
 END AS 'gender_type'
 FROM patients;
 
-/* Show patient_id,first_name,last_name from patients who does not have 
+/*25. Show patient_id,first_name,last_name from patients who does not have 
 any records in the admissions table.(Their patient_id does not exist in any 
 admissions.patient_id rows.) */
 SELECT p.patient_id, p.first_name,p.last_name
