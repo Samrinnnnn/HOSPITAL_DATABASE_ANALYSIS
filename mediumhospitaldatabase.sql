@@ -181,3 +181,27 @@ FROM patients p
 WHERE p.patient_id NOT IN
 (SELECT a.patient_id FROM admissions a);
 
+/*26. Display a single row with max_visits,min_visits,average_visits where 
+the maximum,minimum and average number of admissions per day is calculated.Average
+is rounded to 2 decimal places. */
+SELECT MAX(number_of_visits) AS max_visits,
+MIN(number_of_visits) AS min_visits,
+ROUND(AVG(number_of_visits),2) AS average_visits
+FROM(
+  SELECT admission_date,COUNT(*) AS number_of_visits
+  FROM admissions
+  GROUP BY admission_date
+  )
+
+/*27.Display every patient that has at least one admission and show
+their most recent admission along with the patient and doctor's full name. */
+SELECT p.first_name||' '|| p.last_name AS patient_name,
+a.admission_date, d.first_name||' '|| d.last_name AS doctor_name
+FROM patients p
+JOIN admissions a ON p.patient_id=a.patient_id
+JOIN doctors d ON a.attending_doctor_id=d.doctor_id
+WHERE a.admission_date=(
+  SELECT MAX(a2.admission_date)
+  FROM admissions a2
+  WHERE a2.patient_id=p.patient_id
+  );
