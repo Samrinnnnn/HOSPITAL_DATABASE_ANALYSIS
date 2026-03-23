@@ -40,3 +40,22 @@ AS temp_password
 FROM patients p
 JOIN admissions a ON p.patient_id=a.patient_id;
 
+/*5 Each admission costs $50 for patients without insurance,and $10
+for patients with insurance. All patients with an even patient_id
+have insurance.Give each patient a 'Yes' if they have insurance,
+and a 'No' if they don't have insurance.Add up the admission_total
+cost for each has_insurance group. */
+WITH admission_case AS
+(
+  SELECT CASE WHEN patient_id % 2 =0
+  THEN 'Yes'
+  ELSE 'No'
+  END AS has_insurance
+  FROM admissions
+  )
+SELECT has_insurance,CASE WHEN has_insurance='Yes'
+THEN SUM(10)
+ELSE SUM(50)
+END AS cost_after_insurance
+FROM admission_case
+GROUP BY has_insurance;
