@@ -59,3 +59,24 @@ ELSE SUM(50)
 END AS cost_after_insurance
 FROM admission_case
 GROUP BY has_insurance;
+
+/*6 Show the provinces that has more patients identified as 'M' than'F'.
+Must only show full province_name. */
+SELECT p.province_name
+FROM province_names p
+JOIN patients pa ON p.province_id=pa.province_id
+GROUP BY p.province_name
+HAVING SUM(gender='M') > SUM(gender='F');
+
+/*7 We are looking for a specific patient. Pull all columns for the
+patient who matches the following criteria:
+First_name contains an 'r' after the first two letters.
+Identifies their gender as 'F'
+Born in Feb,May or Dec
+Weight would be between 60 kg and 80 kg
+patient_id is odd number
+city'Kingston' */
+SELECT *FROM patients WHERE gender='F' AND MONTH(birth_date) IN (2,5,12)
+AND weight BETWEEN 60 AND 80 AND 
+patient_id % 2=1 AND
+city='Kingston';
