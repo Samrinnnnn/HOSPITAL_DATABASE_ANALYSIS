@@ -85,3 +85,34 @@ city='Kingston';
 the answer to the nearest hundreth number and in percent form. */
 SELECT ROUND(100*AVG(gender='M'),2) || '%'  AS percent_of_male_patients 
 FROM patients;
+
+/*9. For each day display the total amount of admissions on that day.
+Display the amount changed from the previous date. */
+WITH admissions_daily AS
+( SELECT admission_date,COUNT(patient_id) AS admission_day
+  FROM admissions
+  GROUP BY admission_date
+  )
+SELECT admission_date,admission_day,admission_day-LAG(admission_day)
+OVER (ORDER BY admission_date) AS admission_count_change
+FROM admissions_daily;
+
+/*10. Sort the province names in ascending order in such a way that the province
+'Ontario' is always on top. */
+SELECT province_name
+FROM province_names
+ORDER BY(CASE WHEN province_name='Ontario' THEN 0
+  ELSE 1
+  END),
+province_name;
+
+/*11 . We need a breakdown for the total amount of admissions each doctor
+has started each year. Show the doctor_id,doctor_full_name,specialty,year,
+total_admissions for that year. */
+SELECT d.doctor_id,d.first_name||' '||d.last_name AS doctor_name,d.specialty,
+  YEAR(a.admission_date) AS selected_year,
+COUNT(a.patient_id) AS total_admissions
+FROM admissions a
+LEFT JOIN doctors d ON a.attending_doctor_id=d.doctor_id
+GROUP BY d.doctor_id,selected_year
+ORDER BY d.doctor_id ASC;
