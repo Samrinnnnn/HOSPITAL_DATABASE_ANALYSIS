@@ -80,3 +80,8 @@ SELECT *FROM patients WHERE gender='F' AND MONTH(birth_date) IN (2,5,12)
 AND weight BETWEEN 60 AND 80 AND 
 patient_id % 2=1 AND
 city='Kingston';
+
+/* 8 Show the percent of patients that have 'M' as their gender.Round 
+the answer to the nearest hundreth number and in percent form. */
+SELECT ROUND(100*AVG(gender='M'),2) || '%'  AS percent_of_male_patients 
+FROM patients;
